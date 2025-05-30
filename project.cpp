@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstring>
-#include <cstdio> 
+#include <cstdio> // Untuk FILE handling
 using namespace std;
 
 // Struktur Node untuk Linked List
@@ -19,7 +19,20 @@ Node *head = nullptr;
 
 // Array tipe genre yang valid
 char genreValid[4][20] = {"horor", "komedi", "action", "romance"};
-
+bool kembaliKeMenu()
+{
+    char pilihan;
+    do
+    {
+        cout << "\nBalik ke menu? (y/n): ";
+        cin >> pilihan;
+        if (pilihan == 'y' || pilihan == 'Y')
+            return true;
+        if (pilihan == 'n' || pilihan == 'N')
+            return false;
+        cout << "Masukan tidak valid, silakan pilih 'y' atau 'n'.\n";
+    } while (true);
+}
 // Mengecek apakah genre valid
 bool cekGenreValid(const char *type)
 {
@@ -48,7 +61,7 @@ bool cekDuplikasiJudul(const char *judul)
     return false;
 }
 
-// Menyimpan hanya data film yang baru ditambahkan ke file
+// Menyimpan *hanya data film yang baru ditambahkan* ke file
 void simpanDataFilm(Node *newFilm)
 {
     FILE *file = fopen("data_film.txt", "a+"); // Mode append agar hanya menambah data baru
@@ -67,7 +80,7 @@ void simpanDataFilm(Node *newFilm)
     fclose(file);
 }
 
-// Memuat data film dari file saat program dijalankan
+// *Memuat data film dari file saat program dijalankan*
 void muatDataFilm()
 {
     FILE *file = fopen("data_film.txt", "r");
@@ -92,7 +105,7 @@ void muatDataFilm()
     fclose(file);
 }
 
-// Menambahkan film baru ke linked list
+// *Menambahkan film baru ke linked list*
 void tambahFilm()
 {
     Node *newFilm = new Node;
@@ -127,11 +140,11 @@ void tambahFilm()
     newFilm->next = head;
     head = newFilm;
 
-    simpanDataFilm(newFilm); // Hanya simpan data baru
+    simpanDataFilm(newFilm); // *Hanya simpan data baru*
     cout << "Film berhasil ditambahkan!" << endl;
 }
 
-// Menampilkan film berdasarkan rating rendah ke tinggi atau tinggi ke rendah
+// *Menampilkan film berdasarkan rating rendah ke tinggi atau tinggi ke rendah*
 void tampilkanFilm(bool ascending)
 {
     if (head == nullptr)
@@ -178,9 +191,13 @@ void tampilkanFilm(bool ascending)
         temp = temp->next;
     }
     cout << string(55, '=') << endl;
+    if (!kembaliKeMenu()) // *Tambahkan pilihan balik ke menu*
+    {
+        exit(0);
+    }
 }
 
-// Menu pencarian film
+// *Menu pencarian film*
 void cariFilm()
 {
     int opsi;
@@ -201,24 +218,16 @@ void cariFilm()
         cout << "Masukkan Judul Film yang dicari: ";
         cin.getline(judulCari, 100);
 
-        cout << setw(20) << left << "Judul"
-         << setw(10) << "Tahun"
-         << setw(15) << "Genre"
-         << setw(10) << "Rating" << endl;
-        cout << string(55, '=') << endl;
-
         while (temp != nullptr)
         {
             if (strcmp(temp->judul, judulCari) == 0)
             {
                 ditemukan = true;
-                cout << left
-                     << setw(20) << temp->judul  
-                     << setw(10) << temp->tahun
-                     << setw(15) << temp->genre 
-                     << setw(10) << fixed << setprecision(2) << temp->rating 
-                     << endl;
-                cout << string(55, '=') << endl;
+                cout << "\nFilm ditemukan:\n"
+                     << "Judul: " << temp->judul << "\n"
+                     << "Tahun: " << temp->tahun << "\n"
+                     << "Genre: " << temp->genre << "\n"
+                     << "Rating: " << fixed << setprecision(2) << temp->rating << endl;
                 break; // Menghentikan pencarian setelah menemukan satu hasil
             }
             temp = temp->next;
@@ -230,25 +239,16 @@ void cariFilm()
         cout << "Masukkan Genre yang dicari: ";
         cin.getline(genreCari, 20);
 
-        cout << setw(20) << left << "Judul"
-         << setw(10) << "Tahun"
-         << setw(15) << "Genre"
-         << setw(10) << "Rating" << endl;
-        cout << string(55, '=') << endl;
-
         while (temp != nullptr)
         {
             if (strcmp(temp->genre, genreCari) == 0)
             {
                 ditemukan = true;
-                cout << left
-                     << setw(20) << temp->judul 
-                     << setw(10) << temp->tahun
-                     << setw(15) << temp->genre
-                     << setw(10) << fixed << setprecision(2) << temp->rating 
-                     << endl;
-                cout << string(55, '=') << endl;
-                break;
+                cout << "\nFilm ditemukan:\n"
+                     << "Judul: " << temp->judul << "\n"
+                     << "Tahun: " << temp->tahun << "\n"
+                     << "Genre: " << temp->genre << "\n"
+                     << "Rating: " << fixed << setprecision(2) << temp->rating << endl;
             }
             temp = temp->next;
         }
@@ -259,24 +259,16 @@ void cariFilm()
         cout << "Masukkan Tahun yang dicari: ";
         cin >> tahunCari;
 
-        cout << setw(20) << left << "Judul"
-         << setw(10) << "Tahun"
-         << setw(15) << "Genre"
-         << setw(10) << "Rating" << endl;
-        cout << string(55, '=') << endl;
-
         while (temp != nullptr)
         {
             if (temp->tahun == tahunCari)
             {
                 ditemukan = true;
-                cout << left
-                     << setw(20) << temp->judul
-                     << setw(10) << temp->tahun
-                     << setw(15) << temp->genre
-                     << setw(10) << fixed << setprecision(2) << temp->rating << endl;
-                cout << string(55, '=') << endl;
-                break;
+                cout << "\nFilm ditemukan:\n"
+                     << "Judul: " << temp->judul << "\n"
+                     << "Tahun: " << temp->tahun << "\n"
+                     << "Genre: " << temp->genre << "\n"
+                     << "Rating: " << fixed << setprecision(2) << temp->rating << endl;
             }
             temp = temp->next;
         }
@@ -291,9 +283,13 @@ void cariFilm()
     {
         cout << "Film tidak ditemukan." << endl;
     }
+    if (!kembaliKeMenu()) // *Tambahkan pilihan balik ke menu*
+    {
+        exit(0);
+    }
 }
 
-// Menghapus film dari linked list dan memperbarui file
+// *Menghapus film dari linked list dan memperbarui file*
 void hapusFilm()
 {
     if (head == nullptr)
@@ -333,7 +329,7 @@ void hapusFilm()
         return;
     }
 
-    // Memperbarui file setelah penghapusan
+    // *Memperbarui file setelah penghapusan*
     FILE *file = fopen("data_film.txt", "w"); // Mode "w" untuk menimpa file dengan data baru
     if (file == nullptr)
     {
@@ -354,9 +350,14 @@ void hapusFilm()
 
     fclose(file);
     cout << "Film berhasil dihapus!" << endl;
+    if (!kembaliKeMenu()) // *Tambahkan pilihan balik ke menu*
+    {
+        exit(0);
+    }
 }
+// *Fungsi untuk kembali ke menu utama atau keluar*
 
-// Menu utama
+// *Menu utama*
 void tampilkanMenu()
 {
     cout << "\n=== MENU BIOSKOP ===\n"
@@ -368,57 +369,63 @@ void tampilkanMenu()
          << "6. Keluar\n"
          << "Pilih menu: ";
 }
-
-//login
-struct User {
+// login
+struct User
+{
     string username;
     string password;
 };
 
-void login() {
+void login()
+{
     cout << "LOGIN KE BIOSKOP" << endl;
 
     User users[2] = {
         {"dimasfebri", "145"},
-        {"nisrina", "149"}
-    };
+        {"nisrina", "149"}};
 
     string inputUser, inputPass;
     int check = 0;
-    const int MAX_ATTEMPTS = 3; 
-    bool loginBerhasil = false; 
+    const int MAX_ATTEMPTS = 3;
+    bool loginBerhasil = false;
 
-    do {
+    do
+    {
         cout << "Masukkan Username: ";
         cin >> inputUser;
         cout << "Masukkan Password: ";
         cin >> inputPass;
 
         // Cek semua user yang ada
-        for (int i = 0; i < 2; i++) {
-            if (inputUser == users[i].username && inputPass == users[i].password) {
+        for (int i = 0; i < 2; i++)
+        {
+            if (inputUser == users[i].username && inputPass == users[i].password)
+            {
                 cout << "Halo, " << inputUser << "! SELAMAT DATANG DI BIOSKOP" << endl;
-                loginBerhasil = true; 
-                break; 
+                loginBerhasil = true;
+                break;
             }
         }
 
-        if (!loginBerhasil) {
+        if (!loginBerhasil)
+        {
             check++;
             cout << "Username atau Password salah." << endl;
-            cout << "Percobaan tersisa: " << MAX_ATTEMPTS - check << endl << endl;
+            cout << "Percobaan tersisa: " << MAX_ATTEMPTS - check << endl
+                 << endl;
         }
-    } while (check < MAX_ATTEMPTS && !loginBerhasil); 
+    } while (check < MAX_ATTEMPTS && !loginBerhasil);
 
-    if (!loginBerhasil) {
-        cout << "Terlalu banyak percobaan! Program keluar." << endl; 
+    if (!loginBerhasil)
+    {
+        cout << "Terlalu banyak percobaan! Program keluar." << endl;
         exit(0); // Keluar dari program jika login gagal
     }
 }
 
 int main()
 {
-    login();
+    login();        // Memanggil fungsi login sebelum menjalankan program utama
     muatDataFilm(); // Memuat data dari file saat program dimulai
     int pilihan;
     do
