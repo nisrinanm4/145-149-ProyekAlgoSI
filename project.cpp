@@ -61,7 +61,7 @@ bool cekDuplikasiJudul(const char *judul)
     return false;
 }
 
-// Menyimpan *hanya data film yang baru ditambahkan* ke file
+// Menyimpan **hanya data film yang baru ditambahkan** ke file
 void simpanDataFilm(Node *newFilm)
 {
     FILE *file = fopen("data_film.txt", "a+"); // Mode append agar hanya menambah data baru
@@ -80,7 +80,7 @@ void simpanDataFilm(Node *newFilm)
     fclose(file);
 }
 
-// *Memuat data film dari file saat program dijalankan*
+// **Memuat data film dari file saat program dijalankan**
 void muatDataFilm()
 {
     FILE *file = fopen("data_film.txt", "r");
@@ -105,7 +105,7 @@ void muatDataFilm()
     fclose(file);
 }
 
-// *Menambahkan film baru ke linked list*
+// **Menambahkan film baru ke linked list**
 void tambahFilm()
 {
     Node *newFilm = new Node;
@@ -140,11 +140,11 @@ void tambahFilm()
     newFilm->next = head;
     head = newFilm;
 
-    simpanDataFilm(newFilm); // *Hanya simpan data baru*
+    simpanDataFilm(newFilm); // **Hanya simpan data baru**
     cout << "Film berhasil ditambahkan!" << endl;
 }
 
-// *Menampilkan film berdasarkan rating rendah ke tinggi atau tinggi ke rendah*
+// **Menampilkan film berdasarkan rating rendah ke tinggi atau tinggi ke rendah**
 void tampilkanFilm(bool ascending)
 {
     if (head == nullptr)
@@ -191,13 +191,13 @@ void tampilkanFilm(bool ascending)
         temp = temp->next;
     }
     cout << string(55, '=') << endl;
-    if (!kembaliKeMenu()) // *Tambahkan pilihan balik ke menu*
+    if (!kembaliKeMenu()) // **Tambahkan pilihan balik ke menu**
     {
         exit(0);
     }
 }
 
-// *Menu pencarian film*
+// **Menu pencarian film**
 void cariFilm()
 {
     int opsi;
@@ -283,13 +283,13 @@ void cariFilm()
     {
         cout << "Film tidak ditemukan." << endl;
     }
-    if (!kembaliKeMenu()) // *Tambahkan pilihan balik ke menu*
+    if (!kembaliKeMenu()) // **Tambahkan pilihan balik ke menu**
     {
         exit(0);
     }
 }
 
-// *Menghapus film dari linked list dan memperbarui file*
+// **Menghapus film dari linked list dan memperbarui file**
 void hapusFilm()
 {
     if (head == nullptr)
@@ -329,7 +329,7 @@ void hapusFilm()
         return;
     }
 
-    // *Memperbarui file setelah penghapusan*
+    // **Memperbarui file setelah penghapusan**
     FILE *file = fopen("data_film.txt", "w"); // Mode "w" untuk menimpa file dengan data baru
     if (file == nullptr)
     {
@@ -350,14 +350,14 @@ void hapusFilm()
 
     fclose(file);
     cout << "Film berhasil dihapus!" << endl;
-    if (!kembaliKeMenu()) // *Tambahkan pilihan balik ke menu*
+    if (!kembaliKeMenu()) // **Tambahkan pilihan balik ke menu**
     {
         exit(0);
     }
 }
-// *Fungsi untuk kembali ke menu utama atau keluar*
+// **Fungsi untuk kembali ke menu utama atau keluar**
 
-// *Menu utama*
+// **Menu utama**
 void tampilkanMenu()
 {
     cout << "\n=== MENU BIOSKOP ===\n"
